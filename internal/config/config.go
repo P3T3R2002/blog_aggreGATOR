@@ -19,7 +19,7 @@ func (cfg *Config)Set_user(user_name string) error {
 }
 
 func write(cfg Config) error {
-	full_path, err := getConfigFilePath()
+	full_path, err := get_config_file_path()
 	if err != nil {
 		return err
 	}
@@ -39,7 +39,7 @@ func write(cfg Config) error {
 }
 
 func Read() (Config, error) {
-	full_path, err := getConfigFilePath()
+	full_path, err := get_config_file_path()
 	if err != nil {
 		return Config{}, err
 	}
@@ -59,11 +59,11 @@ func Read() (Config, error) {
 	return cfg, nil
 }
 
-func get_config_path() (string, error) {
+func get_config_file_path() (string, error) {
 	home, err := os.UserHomeDir()
 	if err != nil {
 		return "", err
 	}
-	full_path = filepath.join(home, config_file_name)
+	full_path := filepath.Join(home, config_file_name)
 	return full_path, nil
 }

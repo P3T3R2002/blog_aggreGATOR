@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/P3T3R2002/internal/config"
+	"github.com/P3T3R2002/blog_aggreGATOR/internal/config"
 )
 
 func main() {

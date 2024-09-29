@@ -7,14 +7,13 @@ import (
 )
 
 const config_file_name = ".gatorconfig.json"
-const config_home_path = "workspace/github.com/P3T3R2002/Go/blog_aggreGATOR"
 
 type Config struct {
 	DB_URL           string `json:"db_url"`
 	Current_user_name string `json:"current_user_name"`
 }
 
-func (cfg *Config)Set_user(user_name string) error {
+func (cfg *Config)SetUser(user_name string) error {
 	cfg.Current_user_name = user_name
 	return write(*cfg)
 }
@@ -65,6 +64,6 @@ func get_config_file_path() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	full_path := filepath.Join(home, config_home_path, config_file_name)
+	full_path := filepath.Join(home, config_file_name)
 	return full_path, nil
 }

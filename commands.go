@@ -1,6 +1,9 @@
 package main
 
-import "errors"
+import (
+	"errors"
+	"log"
+)
 
 type Command struct {
 	name string
@@ -12,6 +15,10 @@ type Commands struct {
 }
 
 func (c *Commands)register(name string, f func(*State, Command) error) {
+	_, ok := c.registered_commands[name]
+	if ok {
+		log.Fatal("Command already registered.")
+	}
 	c.registered_commands[name] = f
 }
 

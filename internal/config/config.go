@@ -7,6 +7,7 @@ import (
 )
 
 const config_file_name = ".gatorconfig.json"
+const config_home_path = "workspace/github.com/P3T3R2002/Go/blog_aggreGATOR"
 
 type Config struct {
 	DB_URL           string `json:"db_url"`
@@ -24,7 +25,7 @@ func write(cfg Config) error {
 		return err
 	}
 
-	file, err := os.Open(full_path)
+	file, err := os.Create(full_path)
 	if err != nil {
 		return err
 	}
@@ -64,6 +65,6 @@ func get_config_file_path() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	full_path := filepath.Join(home, config_file_name)
+	full_path := filepath.Join(home, config_home_path, config_file_name)
 	return full_path, nil
 }

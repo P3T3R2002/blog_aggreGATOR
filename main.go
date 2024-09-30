@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"database/sql"
+	"context"
 	"github.com/P3T3R2002/blog_aggreGATOR/internal/config"
 	"github.com/P3T3R2002/blog_aggreGATOR/internal/database"
 )
@@ -43,10 +44,11 @@ func main() {
 	cmds.register("reset", handlerReset)
 	cmds.register("users", handlerUsers)
 	cmds.register("agg", handlerAgg)
-	cmds.register("addfeed", handlerAddFeed)
+	cmds.register("addfeed", middlewareLoggedIn(handlerAddFeed))
 	cmds.register("feeds", handlerFeeds)
-	cmds.register("follow", handlerFollow)
-	cmds.register("following", handlerFollowing)
+	cmds.register("follow", middlewareLoggedIn(handlerFollow))
+	cmds.register("unfollow", middlewareLoggedIn(handlerUnfollow))
+	cmds.register("following", middlewareLoggedIn(handlerFollowing))
 
 	if len(os.Args) < 2 {
 		log.Fatal("Not enough arguments: cli <command> [args...]")
@@ -63,3 +65,14 @@ func main() {
 		log.Fatal(err)
 	}
 } 
+
+func middlewareLoggedIn(handler func(s *State, cmd Command, user database.User) error) func(*State, Command) error {
+	return func(s *State, cmd Command) error {
+		user, err := s.db.GetUser(context.Background(), s.cfg.Current_user_name)
+		if err != nil {
+			return err
+		}
+
+		return handler(s, cmd, user)
+	}
+}

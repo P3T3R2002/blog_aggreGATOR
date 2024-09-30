@@ -23,19 +23,14 @@ func handlerAgg(s *State, cmd Command) error {
 	return nil
 }
 
-func handlerAddFeed(s *State, cmd Command) error {
+func handlerAddFeed(s *State, cmd Command, user database.User) error {
 	if len(cmd.args) != 2 {
 		return errors.New(fmt.Sprintf("Need two argument for %s: cli <command> [args...]", cmd.name))
 	}
 	name := cmd.args[0]
 	url := cmd.args[1]
-	
-	user, err := s.db.GetUser(context.Background(), s.cfg.Current_user_name)
-	if err != nil {
-		return errors.New(fmt.Sprintf("Feed already registered: %s", name))
-	}
 
-	_, err = s.db.CreateFeed(context.Background(), 
+	_, err := s.db.CreateFeed(context.Background(), 
 		database.CreateFeedParams{
 			ID: uuid.New(),
 			CreatedAt: time.Now(),
@@ -55,7 +50,7 @@ func handlerAddFeed(s *State, cmd Command) error {
 	
 	fmt.Println("Feed created successfully!")
 
-	err = handlerFollow(s, Command{name: "follow", args: cmd.args[1:]})
+	err = handlerFollow(s, Command{name: "follow", args: cmd.args[1:]}, user)
 	if err != nil {
 		return err
 	}

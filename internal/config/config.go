@@ -3,6 +3,7 @@ package config
 import (
 	"encoding/json"
 	"os"
+	"log"
 	"path/filepath"
 )
 
@@ -13,16 +14,26 @@ type Config struct {
 	Current_user_name string `json:"current_user_name"`
 }
 
+func CreateJson(dbURL string) (Config, error) {
+	cfg := Config{}
+	cfg.DB_URL = dbURL
+	err := write(cfg)
+	return cfg, err
+}
+
+func CheckJson() bool {
+    fullPath := get_config_file_path()
+	_, err := os.Stat(fullPath)
+    return err == nil
+}
+
 func (cfg *Config)SetUser(user_name string) error {
 	cfg.Current_user_name = user_name
 	return write(*cfg)
 }
 
 func write(cfg Config) error {
-	full_path, err := get_config_file_path()
-	if err != nil {
-		return err
-	}
+	full_path := get_config_file_path()
 
 	file, err := os.Create(full_path)
 	if err != nil {
@@ -39,10 +50,7 @@ func write(cfg Config) error {
 }
 
 func Read() (Config, error) {
-	full_path, err := get_config_file_path()
-	if err != nil {
-		return Config{}, err
-	}
+	full_path := get_config_file_path()
 
 	file, err := os.Open(full_path)
 	if err != nil {
@@ -59,11 +67,11 @@ func Read() (Config, error) {
 	return cfg, nil
 }
 
-func get_config_file_path() (string, error) {
+func get_config_file_path() string {
 	home, err := os.UserHomeDir()
 	if err != nil {
-		return "", err
+		log.Fatal("Error geting HomeDir!")
 	}
 	full_path := filepath.Join(home, config_file_name)
-	return full_path, nil
+	return full_path
 }

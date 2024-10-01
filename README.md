@@ -1,11 +1,13 @@
 # blog_aggreGATOR
 
-
 You will need Postgres and Go installed.
 
+To install copy ```go install github.com/P3T3R2002/blog_aggreGATOR@latest``` to the command line.
+
+At first use it will create a .gatorconfig.json at the home directory if it does not already exists, with the dbURL inside.
 
 Command list:
-* reset:        Reset the databese.
+* reset:        Resets the database.
 * register:     Register a user.
 * login:        Change user.
 * users:        Print out all registered users.

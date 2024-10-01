@@ -19,16 +19,26 @@ type State struct {
 }
 
 func main() {
+	var cfg config.Config
+	var err error
+	if config.CheckJson() {
+		cfg, err = config.Read()
+		if err != nil {
+			log.Fatalf("Reading config error: %v", err)
+		}
+	} else {
+		cfg, err = config.CreateJson(dbURL)
+		if err != nil {
+			log.Fatalf("Creating Json error: %v", err)
+		}
+	}
+
 	db, err := sql.Open("postgres", dbURL)
 	if err != nil {
 		log.Fatalf("Opening postgres error: %v", err)
 	}
 	dbQueries := database.New(db)
 	
-	cfg, err := config.Read()
-	if err != nil {
-		log.Fatalf("Reading config error: %v", err)
-	}
 	
 	programState := &State{
 		db: dbQueries,

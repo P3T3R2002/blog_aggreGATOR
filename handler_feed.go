@@ -9,20 +9,6 @@ import (
 	"github.com/P3T3R2002/blog_aggreGATOR/internal/database"
 )
 
-func handlerAgg(s *State, cmd Command) error {
-	if len(cmd.args) != 0 {
-		return errors.New(fmt.Sprintf("Need zero argument for %s: cli <command> [args...]", cmd.name))
-	}
-
-	feed, err := fetchFeed("https://www.wagslane.dev/index.xml")
-	if err != nil {
-		return errors.New(fmt.Sprintf("couldn't fetch feed: %w\n", err))
-	}
-
-	fmt.Printf("Feed: %+v\n", feed)
-	return nil
-}
-
 func handlerAddFeed(s *State, cmd Command, user database.User) error {
 	if len(cmd.args) != 2 {
 		return errors.New(fmt.Sprintf("Need two argument for %s: cli <command> [args...]", cmd.name))
@@ -55,7 +41,7 @@ func handlerAddFeed(s *State, cmd Command, user database.User) error {
 		return err
 	}
 
-	fmt.Println(feed)
+	printFeed(feed)
 	return nil
 }
 
@@ -69,9 +55,25 @@ func handlerFeeds(s *State, cmd Command) error {
 		return err
 	}
 
-	for _, feed := range feeds {
-		fmt.Printf("* %s\n", feed)
-	}
+	printFeeds(feeds)
 	return nil
 }
 
+func printFeed(feed database.Feed) {
+	fmt.Printf("Feed ID: %v\n", feed.ID)
+	fmt.Printf("Created at: %v\n", feed.CreatedAt)
+	fmt.Printf("Updated at: %v\n", feed.UpdatedAt)
+	fmt.Printf("Name: %s\n", feed.Name)
+	fmt.Printf("Link: %s\n", feed.Url)
+	fmt.Printf("Uploader ID: %v\n", feed.UserID)
+	fmt.Printf("Last fetched at: %v\n", feed.LastFetchedAt)
+}
+
+func printFeeds(feeds []database.GetFeedsRow) {
+	for _, feed := range feeds {
+		fmt.Printf("Feed name: %s\n", feed.Name)
+		fmt.Printf("Feed link: %s\n", feed.Url)
+		fmt.Printf("Created by: %s\n", feed.Name_2)
+	}
+
+}

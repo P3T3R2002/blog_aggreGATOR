@@ -2,9 +2,9 @@
 
 You will need Postgres and Go installed.
 
-To install copy ```go install github.com/P3T3R2002/blog_aggreGATOR@latest``` to the command line.
+To install, copy ```go install github.com/P3T3R2002/blog_aggreGATOR@latest``` to the command line.
 
-At first use it will create a .gatorconfig.json at the home directory if it does not already exists, with the dbURL inside.
+At first use it will create a .gatorconfig.json at the home directory, if it does not already exists, with the dbURL inside.
 
 Command list:
 * reset:        Resets the database.

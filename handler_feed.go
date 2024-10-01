@@ -71,6 +71,7 @@ func printFeed(feed database.Feed) {
 
 func printFeeds(feeds []database.GetFeedsRow) {
 	for _, feed := range feeds {
+		fmt.Println("//-------------------------")
 		fmt.Printf("Feed name: %s\n", feed.Name)
 		fmt.Printf("Feed link: %s\n", feed.Url)
 		fmt.Printf("Created by: %s\n", feed.Name_2)
